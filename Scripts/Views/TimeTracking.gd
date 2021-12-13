@@ -6,6 +6,11 @@ export var title : String
 var res : TimeTrackResource
 
 var total_secs : int
+var secs_this_week : int = 0
+var secs_today : int = 0
+
+var last_monday : Dictionary = Defaults.get_last_monday_from_date(OS.get_date())
+var today : Dictionary = OS.get_date()
 
 var active : bool = false
 
@@ -110,9 +115,15 @@ func update_view_text() -> void:
 	var secs : int = 0
 	
 	for i in $LinearTimeTrackingContainer/ScrollContainer/VBoxContainer.get_children():
-		secs += res.get_track(i.id).get_duration()
-	
-	text = "Total tracked: " + Defaults.get_formatted_time_from_seconds(secs)
+		var track = res.get_track(i.id)
+		var duration = track.get_duration()
+		secs += duration
+		if track.began_later(last_monday):
+			secs_this_week += duration
+		if track.began_later(today):
+		   secs_today += duration
+	   
+	text = "Today: " + Defaults.get_formatted_time_from_seconds(secs_today) + ", This week: " + Defaults.get_formatted_time_from_seconds(secs_this_week) + ", Total tracked: " + Defaults.get_formatted_time_from_seconds(secs)
 	
 	Defaults.emit_signal("update_view_info", text)
 	

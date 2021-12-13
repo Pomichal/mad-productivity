@@ -288,6 +288,11 @@ func get_datetime_from_unix_time(_unixTime : int) -> String:
 	_unixTime += bias * 60
 	return get_date_with_time_string(OS.get_datetime_from_unix_time(_unixTime))
 
+func get_last_monday_from_date(date : Dictionary) -> Dictionary:
+	   var days_to_substract = (date["weekday"] + 6) % 7
+	   var last_monday_unix_time = OS.get_unix_time_from_datetime(date) - days_to_substract * 24 * 3600 # substract the coresponidng number of days
+	   return OS.get_datetime_from_unix_time(last_monday_unix_time)
+
 
 func get_formatted_time_from_seconds(_secs : int) -> String:
 	var neg : bool = false

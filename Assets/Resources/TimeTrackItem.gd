@@ -40,6 +40,11 @@ func get_len(only_last : bool = false) -> int:
 	return length
 
 
+func began_later(date : Dictionary) -> bool:
+	   if len(date_ranges) > 0:
+			   return date_ranges[0][0] - OS.get_unix_time_from_datetime(date) > 0
+	   return false
+
 func is_finished() -> bool:
 	return len(date_ranges[-1]) == 2
 
